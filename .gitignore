@@ -1,0 +1,10 @@
+code/data/[a-z]*
+code/out/[a-z]*
+# Created by https://www.gitignore.io/api/lyx
+
+### LyX ###
+# Ignore LyX backup and autosave files
+# http://www.lyx.org/
+*.lyx~
+*.lyx#
+

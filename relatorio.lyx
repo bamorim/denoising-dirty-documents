@@ -1,0 +1,372 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass extarticle
+\options titlepage
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language portuguese
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2in
+\topmargin 2in
+\rightmargin 2in
+\bottommargin 2in
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 2
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Inteligência Computacional - Denoising Dirty Documents
+\end_layout
+
+\begin_layout Author
+Bernardo D.
+ C.
+ G.
+ de Amorim & Pedro V.
+ Nacif
+\end_layout
+
+\begin_layout Section
+Introdução
+\end_layout
+
+\begin_layout Standard
+OBS: As sub-seções do documento são preliminares e baseadas no modelo de
+ relatório e devem mudar ao longo do projeto.
+\end_layout
+
+\begin_layout Subsection
+O Problema
+\end_layout
+
+\begin_layout Standard
+O problema do denoising (remoção de ruído) de imagens consiste de desenvolver
+ algoritmos que “limpem” imagens deterioradas por uma série de fatores,
+ desde o processo de escaneamento até manchas de fluidos e dobras no papel.
+\end_layout
+
+\begin_layout Standard
+Nossa tarefa é limpar imagens: remover as manchas; remover as dobras de
+ papel; melhorar o contraste; e deixar somente o texto, o mais legível possível.
+ Temos uma série de imagens de treinamento, constituidas de uma imagem 
+\begin_inset Quotes eld
+\end_inset
+
+limpa
+\begin_inset Quotes erd
+\end_inset
+
+ e uma onde um ruido foi adicionado artificialmente.
+ No nosso caso, queremos usar aprendizado de máquina para gerar um algorítimo
+ que consiga limpar essas imagens, treinando-o de alguma forma com as imagens
+ dadas.
+\end_layout
+
+\begin_layout Subsection
+Bibliografia
+\end_layout
+
+\begin_layout Standard
+Blog do Colin Priest
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+target "http://colinpriest.com/"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+, segundo colocado no contest do Kaggle
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+target "https://www.kaggle.com/"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Dados
+\end_layout
+
+\begin_layout Standard
+O dataset
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Obtido em: 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://www.kaggle.com/c/denoising-dirty-documents"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ consiste de cerca de 200 imagens de treinamento sujas e a mesma quantidade
+ de treinamento limpas entre 40 e 50 Mb, em formato png.
+\end_layout
+
+\begin_layout Standard
+Um dos maiores desafios desse problema, assim como em grande parte dos problemas
+ de aprendizado de máquina são:
+\end_layout
+
+\begin_layout Itemize
+Definição do tipo de problema: Define qual vai ser a saída.
+ Será um problema de regressão que dirá o valor para cada pixel da imagem
+ de saída? Será um problema de classificação, que usará cores fixas para
+ aumentar o contraste? Podemos tomar diversos caminhos; um dos mais simples
+ é a regressão, onde a saída é o brilho de cada pixel.
+\end_layout
+
+\begin_layout Itemize
+Extração de Características: A imagem só nos dá a informação base, isto
+ é, o valor de brilho para cada pixel.
+ Podemos usar isto diretamente como uma caraterística para treinar e utilizar
+ nosso algorítimo, isto é: determinar o valor do brilho esperado a partir
+ do brilho dado.
+ Podemos pensar um pouco a mais, como tentar extrair informações dos arredores
+ de cada pixel, como o brilho de cada pixel num raio qualquer, ou a variancia
+ dos pixels num outro raio, ou qualquer outra informação que possa ser extraída
+ e que tenha algum valor para 
+\begin_inset Quotes eld
+\end_inset
+
+entender
+\begin_inset Quotes erd
+\end_inset
+
+ a imagem.
+\end_layout
+
+\begin_layout Standard
+Entretanto, deve-se tomar cuidado para não adicionar muitas features sem
+ pensar sobre o que é realmente útil para o modelo funcionar, e por isso
+ vamos ter que explorar cautelosamente como analisar os dados.
+\end_layout
+
+\begin_layout Section
+Tecnologia
+\end_layout
+
+\begin_layout Standard
+A ferramente selecionada para realizar este projeto é a linguagem R
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+target "https://www.r-project.org/"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+, que é uma implementação da linguagem de programação de estatística S.
+\end_layout
+
+\begin_layout Standard
+A decisão por esta ferramenta está baseada no fato de ser um projeto de
+ código aberto e de software livre; por conter, já incluso na linguagem,
+ diversas ferramentas estatísticas; e por ter um repositório de pacotes
+ (CRAN
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+target "https://cran.r-project.org/"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+) com diversos pacotes de aprendizado de máquina e de visualização de dados.
+\end_layout
+
+\begin_layout Subsection
+Avaliação Preliminar dos Dados
+\end_layout
+
+\begin_layout Standard
+Para começar com o modelo mais simples, vamos utilizar o modelo onde realizamos
+ uma regressão tentando relacionar o brilho da imagem desejada com o brilho
+ da imagem com ruído, ou seja, um problema de 
+\begin_inset Formula $y=f(x)$
+\end_inset
+
+, onde 
+\begin_inset Formula $x$
+\end_inset
+
+ é o brilho da imagem com ruído e 
+\begin_inset Formula $y$
+\end_inset
+
+ é o brilho da imagem limpa.
+ Ao olhar a relação entre todos os 
+\begin_inset Formula $x$
+\end_inset
+
+ e todos os 
+\begin_inset Formula $y$
+\end_inset
+
+ de todas as imagens, temos a seguinte relação:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename code/Rplots.pdf
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Ou seja, para grande parte dos casos, podemos representar 
+\begin_inset Formula $y=\alpha x+\beta$
+\end_inset
+
+, obtendo o 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ e o 
+\begin_inset Formula $\beta$
+\end_inset
+
+ a partir de um algorítimo de regressão linear.
+ Entretanto, isto não é verdade para todas as imagens e todos os pixels,
+ portanto devemos pensar em modelos diferentes, ou numa combinação linear
+ de potencias de 
+\begin_inset Formula $x$
+\end_inset
+
+, ou até mesmo adicionando outras características como variáveis a nossa
+ função de regressão: 
+\begin_inset Formula $y=f(a,b,c,d,e,...)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Metodologia
+\end_layout
+
+\begin_layout Subsection
+Descrição da Metodologia
+\end_layout
+
+\begin_layout Subsection
+Descrição da Solução do Problema Proposto
+\end_layout
+
+\begin_layout Subsection
+Resultados Preliminares
+\end_layout
+
+\begin_layout Section
+Resultados
+\end_layout
+
+\end_body
+\end_document
