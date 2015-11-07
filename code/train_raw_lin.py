@@ -8,6 +8,6 @@ def main():
     y = files['y']
     model = linear_model.LinearRegression()
     model.fit(X,y)
-    pickle.dump(model, open("linear_regression.p", "wb"))
+    pickle.dump(model, open("raw_lin.p", "wb"))
 
 main()

@@ -36,3 +36,12 @@ def total_sample_count(files):
 def sample_count(f):
     w,h = Image.open(f).size
     return w*h
+
+def filter_point_value(val):
+    if(val < 0):
+        return 0
+
+    if(val > 255):
+        return 255
+
+    return int(val)
