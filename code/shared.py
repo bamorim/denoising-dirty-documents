@@ -5,18 +5,23 @@ import numpy as np
 def find_files(basedir):
     return sorted([dirname+"/"+filename for (dirname,_,filenames) in walk(basedir) for filename in filenames])
 
-def extract_y(files):
-    total = total_sample_count(files)
+def extract_y(files,radius=0):
+    total = total_sample_count(files,radius)
     y = np.empty((total,1), dtype=np.uint8)
 
-    i = 0
+    sample_i = 0
     for f in files:
-        for p in Image.open(f).getdata():
-            y[i] = p
-            i+=1
+        image = Image.open(f)
+        w,h = image.size
+        pixels = np.reshape(np.array(image.getdata()),(h,w));
+        for i in range(radius,h-radius):
+            for j in range(radius,w-radius):
+                y[sample_i]=pixels[i,j]
+                sample_i += 1
 
     return y
 
+# DEPRECATED - This is a special case of extract_x_around
 def extract_x(files):
     total = total_sample_count(files)
     X = np.empty((total,1), dtype=np.uint8)
@@ -29,13 +34,34 @@ def extract_x(files):
 
     return X
 
-def total_sample_count(files):
-    sample_counts = map(sample_count,files)
+def extract_x_around(files,radius=0):
+    total = total_sample_count(files,radius)
+    X = np.empty((total,(1+2*radius)**2), dtype=np.uint8)
+
+    sample_i = 0
+    for f in files:
+        image = Image.open(f)
+        w,h = image.size
+        pixels = np.reshape(np.array(image.getdata()),(h,w));
+        for i in range(radius,h-radius):
+            for j in range(radius,w-radius):
+                sample_j = 0
+                for ri in range(-radius,radius):
+                    for rj in range(-radius,radius):
+                        X[sample_i,sample_j]=pixels[i+ri,j+rj]
+                        sample_j += 1
+                sample_i += 1
+
+    return X
+    
+
+def total_sample_count(files,radius=0):
+    sample_counts = map(lambda f: sample_count(f,radius),files)
     return sum(sample_counts)
 
-def sample_count(f):
+def sample_count(f,radius=0):
     w,h = Image.open(f).size
-    return w*h
+    return (w-2*radius)*(h-2*radius)
 
 def filter_point_value(val):
     if(val < 0):
