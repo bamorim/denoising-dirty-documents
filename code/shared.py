@@ -21,20 +21,7 @@ def extract_y(files,radius=0):
 
     return y
 
-# DEPRECATED - This is a special case of extract_x_around
-def extract_x(files):
-    total = total_sample_count(files)
-    X = np.empty((total,1), dtype=np.uint8)
-
-    i = 0
-    for f in files:
-        for p in Image.open(f).getdata():
-            X[i] = p
-            i+=1
-
-    return X
-
-def extract_x_around(files,radius=0):
+def extract_x(files,radius=0):
     total = total_sample_count(files,radius)
     X = np.empty((total,(1+2*radius)**2), dtype=np.uint8)
 

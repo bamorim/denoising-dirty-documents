@@ -1,7 +1,7 @@
 import numpy as np
-from sklearn import linear_model
 import pickle
 import sys
+from models import *
 
 def main():
     if len(sys.argv) > 2:
@@ -14,7 +14,7 @@ def main():
     files = np.load(inname)
     X = files['X']
     y = files['y']
-    model = linear_model.LinearRegression()
+    model = Linear()
     model.fit(X,y)
     pickle.dump(model, open(outname, "wb"))
 
