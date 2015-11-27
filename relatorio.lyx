@@ -6,7 +6,6 @@
 \options titlepage
 \use_default_options true
 \begin_modules
-theorems-ams
 eqs-within-sections
 figs-within-sections
 \end_modules
@@ -311,9 +310,38 @@ Para começar com o modelo mais simples, vamos utilizar o modelo onde realizamos
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename code/Rplots.pdf
-	width 100text%
+	filename code/plots/raw.png
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Relação amostral (10.000 amostras aleatorias) entre pixel com ruído(x) e
+ pixel limpo (y)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
 
 \end_inset
 
@@ -348,6 +376,101 @@ Ou seja, para grande parte dos casos, podemos representar
 .
 \end_layout
 
+\begin_layout Standard
+Além disso, podemos ver também que grande parte dos dados de saída são brancos
+ (255), como na Figura 2.2.
+ Isso indica que um problema de classificação pode ser útil também.
+ Ou apenas uma regressão com um thresholding.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename code/plots/ydistall.png
+	width 50col%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Todos
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename code/plots/ydist-notblank.png
+	width 50col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Não brancos
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Distribuição de pixels limpos
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Metodologia
 \end_layout
@@ -356,12 +479,323 @@ Metodologia
 Descrição da Metodologia
 \end_layout
 
+\begin_layout Standard
+O objetivo é achar um modelo que consiga limpar a imagem, isto é, determinar
+ o brilho de um pixel dado propriedades referentes a ele.
+ O modelo consiste em entender 
+\series bold
+quais dados
+\series default
+ serão usados e qual é a 
+\series bold
+função
+\series default
+ e o 
+\series bold
+método de treinamento
+\series default
+ que modela o resultado a partir dos dados utilizados.
+\end_layout
+
+\begin_layout Standard
+Para obter os dados podemos pensar em diferentes formas de 
+\series bold
+extrair essas informações
+\series default
+ da imagem.
+ Na hora de escolher a 
+\series bold
+função
+\series default
+ podemos testar várias, evoluindo em complexidade, partindo de um modelo
+ mais simples (linear) até modelos não-lineares mais complexos (uma Rede
+ Neural, por exemplo).
+ Além disso devemos nos atentar ao 
+\series bold
+método de treinamento
+\series default
+, isto é, como vamos utilizar os dados para chegar nos parametros do modelo.
+ Isto envolve selecionar as features mais relevantes, para agilizar o tempo
+ de treinamento e envolve em testar diferentes algorítimos de treinamento,
+ visando evitar mínimos locais na redução das medidas de erro.
+\end_layout
+
 \begin_layout Subsection
 Descrição da Solução do Problema Proposto
 \end_layout
 
+\begin_layout Standard
+Como primeira solução, será utilizado uma relação linear entre um pixel
+ 
+\begin_inset Quotes eld
+\end_inset
+
+sujo
+\begin_inset Quotes erd
+\end_inset
+
+ e o pixel 
+\begin_inset Quotes eld
+\end_inset
+
+limpo
+\begin_inset Quotes erd
+\end_inset
+
+ correspondente.
+ Precisamos achar então uma função 
+\begin_inset Formula $f(x)=ax+b$
+\end_inset
+
+ que modele este problema.
+ Para isso vamos utilizar um regressor linear por 
+\series bold
+RMS
+\series default
+.
+\end_layout
+
 \begin_layout Subsection
 Resultados Preliminares
+\end_layout
+
+\begin_layout Subsubsection
+Comparação entre quantidade de pixels próximos utilizados
+\end_layout
+
+\begin_layout Standard
+Percebemos que adicionar pixels ao redor melhora um pouco o resultado de
+ um regressor linear simples:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Pixels
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+RMS
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1x1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $572.78\pm101.96$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3x3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $542.44\pm86.59$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5x5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $476.94\pm70.04$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Imagens filtradas
+\end_layout
+
+\begin_layout Standard
+Em algumas das imagens conseguimos obter um bom resultado (onde o ruido
+ era basicamente uma cor só), e em outras nem tanto.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename code/data/test/4.png
+	width 50col%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename code/out/raw_lin/4.png
+	width 50col%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Bom resultado, utilizando apenas uma janela de 1x1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename code/data/test/31.png
+	width 50col%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename code/out/raw_lin/31.png
+	width 50col%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Resultado medíocre, com janela 1x1 também
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename code/out/raw_lin/19.png
+	width 50col%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename code/out/r2_lin/19.png
+	width 50col%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Pouca melhoria perceptiva entre janela 1x1 e 5x5
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
