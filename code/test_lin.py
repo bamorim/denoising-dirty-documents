@@ -18,10 +18,7 @@ def main():
         w,h = Image.open(f).size
         X = extract_x([f],r)
         dim = (h-2*r,w-2*r)
-        print(X.shape)
-        print(dim)
         y = model.predict(X)
-        print(y.shape)
         y = np.reshape(y, dim)
         y = np.vectorize(filter_point_value)(y)
 
