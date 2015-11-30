@@ -19,13 +19,4 @@ def main():
     outname = "data/train_r"+str(r)+".npz"
     np.savez(outname,X=X,y=y)
 
-def train_model(train_files_x, train_files_y):
-    model = linear_model.LinearRegression()
-    X = extract_x(train_files_x)
-    y = extract_y(train_files_y)
-    model.fit(X,y)
-    return lambda V: model.predict(V)
-
-
-
 main()

@@ -16,4 +16,4 @@ class Linear(Model):
 
 class SGD(Model):
     def __init__(self):
-        self.model = linear_model.SGDRegressor(eta0=0.0001)
+        self.model = linear_model.SGDRegressor()

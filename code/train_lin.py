@@ -15,7 +15,7 @@ def main():
     X = files['X']
     y = files['y']
     model = Linear()
-    model.fit(X,y)
+    model.fit(X.astype(np.float32),y.astype(np.float32))
     pickle.dump(model, open(outname, "wb"))
 
 main()

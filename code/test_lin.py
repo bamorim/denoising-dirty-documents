@@ -1,6 +1,6 @@
 from models import *
 from PIL import Image
-from shared import find_files, extract_x, filter_point_value
+from shared import find_files, extract_x, denormalize
 import sys
 import numpy as np
 import pickle
@@ -20,7 +20,7 @@ def main():
         dim = (h-2*r,w-2*r)
         y = model.predict(X)
         y = np.reshape(y, dim)
-        y = np.vectorize(filter_point_value)(y)
+        y = denormalize(y)
 
         img = Image.fromarray(y.astype(np.uint8))
         outf = str.replace(f,"data/test","out/r%d_lin" % (r))
