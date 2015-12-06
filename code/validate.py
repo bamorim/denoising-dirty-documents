@@ -1,26 +1,23 @@
 import numpy as np
 import sys
 from models import *
+from shared import getarg
 
 def main():
-    if len(sys.argv) > 1:
-        inname = sys.argv[1]
-    else:
-        inname = "data/train_raw.npz"
+    inname = getarg(1,"data/train_raw.npz")
+    model_name = getarg(2, "Linear")
+    model = eval(model_name)()
 
-    if len(sys.argv) > 2:
-        model_name = sys.argv[2]
-    else:
-        model_name = "Linear"
-
+    print("Train Set: "+inname)
         
+    print("Loading file")
     files = np.load(inname)
     X = files['X']
     y = files['y']
-    model = eval(model_name)()
+
+    print("Validating...")
     scores = model.cross_val_score(X,y)
-    print("Train Set: "+inname)
     print("Model: "+model_name)
-    print("RMS: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+    print("MSE: %0.2f (+/- %0.2f)" % (scores.mean()*100, scores.std() * 200))
 
 main()
