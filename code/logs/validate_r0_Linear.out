@@ -1,5 +1,0 @@
-Train Set: data/train_r0.npz
-Loading file
-Validating...
-Model: Linear
-MSE: -0.88 (+/- 0.16)
