@@ -43,7 +43,7 @@ class ANNBasic(Model):
         return 3
 
     def set_model(self,hidden_layer_sizes):
-        self.model = neural_network.MLPRegressor(algorithm='l-bfgs', alpha=1e-3, hidden_layer_sizes=hidden_layer_sizes, random_state=1)
+        self.model = neural_network.MLPRegressor(algorithm='l-bfgs', alpha=1e-5, hidden_layer_sizes=hidden_layer_sizes, random_state=1)
 
 class ANN_3(ANNBasic):
     def __init__(self):
@@ -52,6 +52,10 @@ class ANN_3(ANNBasic):
 class ANN_5(ANNBasic):
     def __init__(self):
         self.set_model((5,))
+
+class ANN_3_3(ANNBasic):
+    def __init__(self):
+        self.set_model((3,3,))
 
 class ANN_9(ANNBasic):
     def __init__(self):

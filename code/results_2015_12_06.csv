@@ -1,0 +1,16 @@
+dataset,model,mse,msevar
+data/train_c_k3_r0.npz,ANN_3,-7.17,0.84
+data/train_c_k3_r0.npz,ANN_5_3,-1.61,0.21
+data/train_c_k3_r0.npz,ANN_5,-1.37,0.17
+data/train_c_k3_r0.npz,Linear,-0.78,0.20
+data/train_c_k3_r1.npz,ANN_3,-1.36,0.16
+data/train_c_k3_r1.npz,ANN_5_3,-1.34,0.16
+data/train_c_k3_r1.npz,ANN_5,-0.45,0.14
+data/train_c_k3_r1.npz,Linear,-0.67,0.13
+data/train_k3_r0.npz,Linear,-1.11,0.30
+data/train_k3_r1.npz,Linear,-1.05,0.28
+data/train_r0.npz,Linear,-0.88,0.16
+data/train_r1.npz,ANN_3,-0.34,0.04
+data/train_r1.npz,ANN_5_3,-0.49,0.42
+data/train_r1.npz,ANN_5,-0.60,0.22
+data/train_r1.npz,Linear,-0.74,0.11
