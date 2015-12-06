@@ -7,7 +7,8 @@ import numpy as np
 import pickle
 
 def main():
-    f = sys.argv[1]
+    fo = sys.argv[1]
+    fk = path.join("out/r0_KMeansThresholding",path.basename(f0))
     r = int(getarg(2,0))
     inname = getarg(3,"data/r%d_lin.p" % (r))
 
@@ -16,7 +17,9 @@ def main():
     model = pickle.load(open(inname, "rb"))
 
     w,h = Image.open(f).size
-    X = extract_x([f],r)
+    X = extract_x([fo],r)
+    Xk = extract_x([fk],r,True)
+    X = np.concatenate([X,Xk], axis=1)
 
     dim = (h-2*r,w-2*r)
     y = model.predict(X)

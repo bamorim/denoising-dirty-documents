@@ -1,0 +1,38 @@
+Traceback (most recent call last):
+  File "test.py", line 1, in <module>
+    from models import *
+  File "/home/bamorim/ufrj/ic/trabalho/code/models.py", line 2, in <module>
+    from sklearn import linear_model, cross_validation, tree, neural_network, cluster, metrics
+  File "/home/bamorim/.local/lib/python3.5/site-packages/sklearn/__init__.py", line 57, in <module>
+    from .base import clone
+  File "/home/bamorim/.local/lib/python3.5/site-packages/sklearn/base.py", line 11, in <module>
+    from .utils.fixes import signature
+  File "/home/bamorim/.local/lib/python3.5/site-packages/sklearn/utils/__init__.py", line 11, in <module>
+    from .validation import (as_float_array,
+  File "/home/bamorim/.local/lib/python3.5/site-packages/sklearn/utils/validation.py", line 16, in <module>
+    from ..utils.fixes import signature
+  File "/home/bamorim/.local/lib/python3.5/site-packages/sklearn/utils/fixes.py", line 45, in <module>
+    from scipy.special import expit     # SciPy >= 0.10
+  File "/usr/lib/python3.5/site-packages/scipy/special/__init__.py", line 603, in <module>
+    from .basic import *
+  File "/usr/lib/python3.5/site-packages/scipy/special/basic.py", line 18, in <module>
+    from . import orthogonal
+  File "/usr/lib/python3.5/site-packages/scipy/special/orthogonal.py", line 101, in <module>
+    from scipy import linalg
+  File "/usr/lib/python3.5/site-packages/scipy/linalg/__init__.py", line 180, in <module>
+    from .decomp_schur import *
+  File "/usr/lib/python3.5/site-packages/scipy/linalg/decomp_schur.py", line 152, in <module>
+    eps = numpy.finfo(float).eps
+  File "/usr/lib/python3.5/site-packages/numpy/core/getlimits.py", line 122, in __new__
+    obj = object.__new__(cls)._init(dtype)
+  File "/usr/lib/python3.5/site-packages/numpy/core/getlimits.py", line 152, in _init
+    'numpy %s precision floating point number' % precname)
+  File "/usr/lib/python3.5/site-packages/numpy/core/machar.py", line 114, in __init__
+    self._do_init(float_conv, int_conv, float_to_float, float_to_str, title)
+  File "/usr/lib/python3.5/site-packages/numpy/core/machar.py", line 260, in _do_init
+    if any(temp1*beta == y) and any(temp != y):
+  File "/usr/lib/python3.5/site-packages/numpy/core/fromnumeric.py", line 1959, in any
+    return arr.any(axis=axis, out=out, keepdims=keepdims)
+  File "/usr/lib/python3.5/site-packages/numpy/core/_methods.py", line 37, in _any
+    def _any(a, axis=None, dtype=None, out=None, keepdims=False):
+KeyboardInterrupt

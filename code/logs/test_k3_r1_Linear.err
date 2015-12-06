@@ -1,0 +1,8 @@
+/home/bamorim/.local/lib/python3.5/site-packages/sklearn/cross_validation.py:42: DeprecationWarning: This module has been deprecated in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+  "This module will be removed in 0.20.", DeprecationWarning)
+Traceback (most recent call last):
+  File "test.py", line 35, in <module>
+    main()
+  File "test.py", line 16, in main
+    model = pickle.load(open(inname, "rb"))
+FileNotFoundError: [Errno 2] No such file or directory: 'data/k3_r1_Linear.p'
